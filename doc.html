@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luxia Home – Kiến tạo không gian · Đầu tư di sản</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<!-- Đã cập nhật lại link Google Fonts sang Montserrat để hỗ trợ 100% tiếng Việt -->
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0B1C38;       
+    --navy-light: #1A3055;
+    --gold: #C19B5E;       
+    --gold-light: #E0BA7B;
+    --red: #DE3636;        
+    --white: #FFFFFF;
+    --bg-alt: #F8F9FA;     
+    --border: #EAEAEA;     
+    --text-main: #333333;  
+    --text-gray: #777777;  
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Montserrat', Arial, sans-serif; background: var(--white); color: var(--text-main); overflow-x: hidden; }
+
+  /* Đảm bảo khi cuộn đến thẻ id, thanh menu cố định không che lấp tiêu đề */
+  section, .cta-banner, footer { scroll-margin-top: 80px; }
+
+  /* ─── TOPBAR ─────────────────────────────── */
+  .topbar {
+    background: var(--navy); 
+    padding: 8px 40px; display: flex; align-items: center; justify-content: space-between;
+    font-size: 13px; color: #D1D5DB; letter-spacing: 0.04em;
+  }
+  .topbar a { color: #D1D5DB; text-decoration: none; transition: color .2s; }
+  .topbar a:hover { color: var(--white); }
+  .topbar-left { display: flex; gap: 32px; align-items: center; }
+  .topbar-left span { display: flex; align-items: center; gap: 7px; }
+  .topbar-right { display: flex; align-items: center; gap: 16px; }
+  .search-box {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--white); padding: 5px 16px; border-radius: 20px;
+  }
+  .search-box input {
+    background: none; border: none; outline: none; color: var(--text-main);
+    font-size: 13px; width: 160px; font-family: 'Montserrat', Arial, sans-serif;
+  }
+  .search-box input::placeholder { color: #999; }
+  .search-box svg { color: var(--navy); }
+
+  /* ─── NAVBAR ─────────────────────────────── */
+  nav {
+    background: var(--white); padding: 0 40px; display: flex; align-items: center;
+    justify-content: space-between; position: sticky; top: 0; z-index: 999;
+    border-bottom: 1px solid var(--border); box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+    transition: box-shadow 0.3s;
+  }
+  .logo { display: flex; flex-direction: column; padding: 16px 0; text-decoration: none; }
+  .logo-name {
+    font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 700;
+    color: var(--navy); letter-spacing: 0.15em; line-height: 1;
+  }
+  .logo-sub { font-size: 10px; letter-spacing: 0.25em; color: var(--text-gray); text-transform: uppercase; margin-top: 3px; font-weight: 600;}
+  
+  .menu-toggle { display: none; font-size: 24px; color: var(--navy); cursor: pointer; }
+  
+  .nav-links { display: flex; align-items: center; gap: 4px; list-style: none; transition: 0.3s; }
+  .nav-links > li { position: relative; }
+  .nav-links > li > a {
+    display: flex; align-items: center; gap: 5px; padding: 24px 16px;
+    font-size: 13.5px; font-weight: 600; letter-spacing: 0.06em;
+    color: var(--navy); text-decoration: none; transition: color .2s; white-space: nowrap;
+  }
+  .nav-links > li > a:hover, .nav-links > li.active > a { color: var(--gold); }
+  .nav-links > li > a svg { width: 12px; height: 12px; }
+
+  .dropdown {
+    position: absolute; top: 100%; left: 0; background: var(--white);
+    border: 1px solid var(--border); border-top: 2px solid var(--navy);
+    min-width: 220px; opacity: 0; visibility: hidden; transform: translateY(8px);
+    transition: all .25s; z-index: 100;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  }
+  .nav-links > li:hover .dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
+  .dropdown a {
+    display: block; padding: 12px 20px; font-size: 13px; color: var(--text-main);
+    text-decoration: none; border-bottom: 1px solid var(--border);
+    transition: all .2s; letter-spacing: 0.03em; font-weight: 500;
+  }
+  .dropdown a:hover { background: var(--bg-alt); color: var(--navy); padding-left: 26px; }
+
+  /* ─── HERO ───────────────────────────────── */
+  .hero { position: relative; height: 92vh; min-height: 620px; display: flex; align-items: center; overflow: hidden; }
+  .hero-bg { position: absolute; inset: 0; background: linear-gradient(135deg, #1a2a40 0%, #0B1C38 100%); }
+  .hero-img-placeholder {
+    position: absolute; inset: 0; background: #EAEAEA; display: flex; align-items: center;
+    justify-content: center; font-size: 14px; color: #888; letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .hero-img-placeholder::after { content: '[ ẢNH HERO – CÔNG TRÌNH TÂN CỔ ĐIỂN ]'; }
+  .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to right, rgba(11,28,56,0.85) 40%, rgba(11,28,56,0.2) 100%); }
+  .hero-content { position: relative; z-index: 2; padding: 0 80px; max-width: 800px; }
+  .hero-eyebrow { font-size: 12px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold-light); margin-bottom: 20px; display: flex; align-items: center; gap: 12px; font-weight: 600;}
+  .hero-eyebrow::before { content: ''; display: inline-block; width: 40px; height: 1px; background: var(--gold-light); }
+  .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(42px, 5vw, 72px); font-weight: 400; line-height: 1.15; color: var(--white); margin-bottom: 12px; }
+  .hero h1 em { font-style: italic; color: var(--gold-light); }
+  .hero-sub { font-size: 15px; color: #E0E0E0; line-height: 1.8; margin-bottom: 40px; max-width: 480px; font-weight: 400; letter-spacing: 0.02em; }
+  .hero-cta { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  
+  .btn-primary {
+    background: var(--navy); color: var(--white); padding: 14px 36px;
+    font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+    text-decoration: none; border: none; cursor: pointer; transition: all .25s; font-family: 'Montserrat', Arial, sans-serif;
+    border-radius: 4px;
+  }
+  .btn-primary:hover { background: var(--navy-light); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(11,28,56,0.2); }
+  .btn-outline {
+    color: var(--white); border: 1px solid rgba(255,255,255,0.6); padding: 13px 32px;
+    font-size: 13px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+    text-decoration: none; transition: all .25s; display: inline-block; border-radius: 4px;
+  }
+  .btn-outline:hover { background: var(--white); color: var(--navy); }
+
+  .hero-scroll { position: absolute; bottom: 40px; left: 80px; z-index: 2; display: flex; align-items: center; gap: 12px; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #DDD; }
+  .scroll-line { width: 50px; height: 1px; background: var(--gold-light); animation: scrollAnim 2s ease-in-out infinite; }
+  @keyframes scrollAnim { 0%,100%{opacity:1;transform:scaleX(1)} 50%{opacity:.4;transform:scaleX(.5)} }
+
+  .hero-stats { position: absolute; right: 80px; bottom: 60px; z-index: 2; display: flex; gap: 48px; }
+  .stat { text-align: center; }
+  .stat-num { font-family: 'Cormorant Garamond', serif; font-size: 42px; font-weight: 700; color: var(--gold-light); line-height: 1; }
+  .stat-label { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: #DDD; margin-top: 4px; font-weight: 600;}
+
+  /* ─── SECTION BASE ───────────────────────── */
+  section { padding: 80px 80px; }
+  .section-eyebrow { font-size: 18px; font-weight: 600; color: var(--gold); margin-bottom: 10px; }
+  .section-title { font-family: 'Montserrat', Arial, sans-serif; font-size: clamp(28px, 3.5vw, 44px); font-weight: 700; color: var(--navy); line-height: 1.4; }
+  .section-title strong { font-weight: 700; }
+  .section-divider { width: 60px; height: 3px; background: var(--navy); margin: 20px 0 32px; }
+  .section-header-row { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 48px; flex-wrap: wrap; gap: 20px; }
+  
+  .filter-tabs { display: flex; gap: 10px; flex-wrap: wrap; }
+  .filter-tab {
+    padding: 10px 24px; border: 1px solid var(--border); background: var(--white); color: var(--text-main);
+    font-size: 13px; font-weight: 500; cursor: pointer; border-radius: 4px;
+    transition: all .2s; font-family: 'Montserrat', Arial, sans-serif;
+  }
+  .filter-tab:hover, .filter-tab.active { border-color: var(--navy); color: var(--navy); }
+  
+  .btn-see-all {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 11px 28px;
+    background: var(--navy); color: var(--white); font-size: 13px; font-weight: 500;
+    text-decoration: none; cursor: pointer; transition: all .2s; font-family: 'Montserrat', Arial, sans-serif; white-space: nowrap;
+    border-radius: 4px; border: none;
+  }
+  .btn-see-all:hover { background: var(--navy-light); }
+
+  /* ─── PORTFOLIO GRID ─────────────────────── */
+  .portfolio { background: var(--white); }
+  .project-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .project-card { background: var(--white); overflow: hidden; cursor: pointer; position: relative; border-radius: 6px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); transition: transform 0.3s; }
+  .project-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
+  .project-img { aspect-ratio: 4/3; background: #E0E0E0; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
+  .project-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
+  .project-card:hover .project-img img { transform: scale(1.05); }
+  .project-info { padding: 20px 18px; }
+  .project-title { font-size: 17px; font-weight: 700; color: var(--navy); line-height: 1.4; margin-bottom: 12px; }
+  .project-meta { display: flex; flex-direction: column; gap: 6px; }
+  .meta-row { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-main); font-weight: 500;}
+  .meta-row svg { width: 14px; height: 14px; flex-shrink: 0; color: var(--red); }
+
+  /* ─── ABOUT SECTION ──────────────────────── */
+  .about { background: var(--bg-alt); }
+  .about-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  .about-media { position: relative; aspect-ratio: 4/5; }
+  .img-placeholder {
+    width: 100%; height: 100%; background: #E0E0E0; display: flex; align-items: center;
+    justify-content: center; color: #888; font-size: 12px; letter-spacing: 0.12em;
+    text-transform: uppercase; text-align: center; padding: 20px;
+  }
+  .about-badge {
+    position: absolute; bottom: -24px; right: -24px; width: 140px; height: 140px;
+    background: var(--gold); display: flex; flex-direction: column; align-items: center; justify-content: center;
+    border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  }
+  .badge-num { font-family: 'Cormorant Garamond', serif; font-size: 48px; font-weight: 700; color: var(--white); line-height: 1; }
+  .badge-txt { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--white); font-weight: 600; text-align: center; padding: 0 8px; }
+  .about-text p { font-size: 15px; line-height: 1.9; color: var(--text-gray); font-weight: 400; margin-bottom: 16px; }
+  .values-3t { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; margin-top: 32px; }
+  .value-card { background: var(--white); border: 1px solid var(--border); padding: 20px 16px; text-align: center; transition: all .25s; border-radius: 4px; }
+  .value-card:hover { border-color: var(--navy); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+  .value-letter { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 700; color: var(--gold); line-height: 1; }
+  .value-name { font-size: 14px; font-weight: 700; color: var(--navy); margin: 6px 0 4px; text-transform: uppercase; }
+  .value-desc { font-size: 13px; color: var(--text-gray); line-height: 1.6; }
+
+  /* ─── SERVICES & PRICING ─────────────────── */
+  .services { background: var(--bg-alt); }
+  .pricing-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 40px; }
+  .pricing-card { background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 40px 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); transition: all 0.3s; display: flex; flex-direction: column; align-items: center; }
+  .pricing-card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(11,28,56,0.08); border-color: var(--navy); }
+  .pricing-icon { width: 60px; height: 60px; color: var(--red); margin-bottom: 16px; }
+  .pricing-icon svg { width: 100%; height: 100%; }
+  .pricing-title { font-size: 18px; font-weight: 700; color: var(--navy); margin-bottom: 24px; text-transform: uppercase; text-align: center; }
+  .pricing-box { background: var(--navy); width: 100%; border-radius: 8px; padding: 24px 20px; margin-bottom: 24px; box-shadow: inset 0 0 0 1px rgba(193, 155, 94, 0.4); border: 2px solid var(--navy-light); }
+  .price-row { display: flex; align-items: center; justify-content: flex-start; gap: 12px; padding: 12px 16px; border: 1px solid rgba(193, 155, 94, 0.4); border-radius: 4px; margin-bottom: 10px; color: var(--white); font-size: 14.5px; font-weight: 500; }
+  .price-row:last-child { margin-bottom: 0; }
+  .price-row strong { color: var(--gold-light); margin-left: auto; font-size: 16px; }
+  .price-row .icon-a { color: var(--gold); font-weight: 800; font-style: italic; font-family: 'Cormorant Garamond', serif; font-size: 20px; line-height: 1; }
+  .pricing-details { list-style: none; text-align: left; font-size: 14px; color: var(--text-main); margin-bottom: 32px; line-height: 1.7; width: 100%; padding: 0 10px; }
+  .pricing-details li { position: relative; padding-left: 16px; margin-bottom: 14px; }
+  .pricing-details li::before { content: '•'; position: absolute; left: 0; color: var(--text-main); font-weight: bold; }
+  .btn-pricing { background: var(--red); color: var(--white); padding: 12px 36px; border-radius: 30px; font-size: 14px; font-weight: 700; text-decoration: none; transition: all 0.2s; margin-top: auto; box-shadow: 0 4px 15px rgba(222, 54, 54, 0.3); font-family: 'Montserrat', Arial, sans-serif;}
+  .btn-pricing:hover { background: #c22929; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(222, 54, 54, 0.4); }
+
+  /* ─── DIFFERENTIATORS ────────────────────── */
+  .diff { background: var(--white); }
+  .diff-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .diff-card { padding: 50px; background: var(--bg-alt); border-radius: 6px; border: 1px solid var(--border); transition: all .3s; position: relative; overflow: hidden; }
+  .diff-card:hover { border-color: var(--navy); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+  .diff-number { font-family: 'Cormorant Garamond', serif; font-size: 80px; font-weight: 700; color: rgba(11,28,56,0.05); line-height: 1; margin-bottom: -20px; user-select: none; }
+  .diff-title { font-size: 22px; font-weight: 700; color: var(--navy); line-height: 1.3; margin-bottom: 16px; }
+  .diff-desc { font-size: 15px; color: var(--text-gray); line-height: 1.8; font-weight: 400; }
+
+  /* ─── REAL PROJECTS (VIDEO) ──────────────── */
+  .real-projects { background: var(--bg-alt); }
+  .video-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; gap: 20px; }
+  .video-item { position: relative; overflow: hidden; cursor: pointer; background: var(--white); border-radius: 6px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+  .video-item.large { grid-row: span 2; }
+  .video-thumb { background: #E0E0E0; display: flex; align-items: center; justify-content: center; transition: transform .4s; overflow: hidden; border-radius: 6px;}
+  .video-item.large .video-thumb { height: 100%; min-height: 500px; }
+  .video-item:not(.large) .video-thumb { height: 248px; }
+  .video-item:hover .video-thumb { transform: scale(1.03); }
+  .play-btn { width: 60px; height: 60px; background: rgba(255,255,255,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; position: absolute; z-index: 2; transition: all .25s; top: 50%; left: 50%; transform: translate(-50%, -50%); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+  .play-btn:hover { background: var(--red); }
+  .play-btn svg { width: 22px; height: 22px; color: var(--navy); margin-left: 4px; transition: color 0.2s;}
+  .play-btn:hover svg { color: var(--white); }
+  .video-label { position: absolute; bottom: 0; left: 0; right: 0; padding: 24px; background: linear-gradient(to top, rgba(11,28,56,0.9) 0%, transparent 100%); z-index: 2; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px; }
+  .video-title { font-size: 18px; font-weight: 700; color: var(--white); letter-spacing: 0.05em; text-transform: uppercase; }
+  .video-sub { font-size: 13px; color: rgba(255,255,255,0.7); margin-top: 4px; }
+
+  /* ─── PROCESS ────────────────────────────── */
+  .process { background: var(--white); }
+  .process-steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; position: relative; }
+  .process-step { padding: 0 10px; text-align: center; }
+  .step-num { width: 72px; height: 72px; border: 2px solid var(--navy); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 700; color: var(--navy); background: var(--white); position: relative; z-index: 1; transition: all .3s; }
+  .process-step:hover .step-num { background: var(--navy); color: var(--white); box-shadow: 0 5px 15px rgba(11,28,56,0.2); }
+  .step-title { font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 10px; }
+  .step-desc { font-size: 13px; color: var(--text-gray); line-height: 1.7; }
+
+  /* ─── WORKSHOP ───────────────────────────── */
+  .workshop { background: var(--white); }
+  .workshop-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  .workshop-gallery { display: grid; grid-template-columns: 2fr 1fr; grid-template-rows: 1fr 1fr; gap: 10px; height: 480px; }
+  .gallery-item { background: #E0E0E0; overflow: hidden; border-radius: 6px; }
+  .gallery-item.tall { grid-row: span 2; }
+  .gallery-item .img-placeholder { height: 100%; }
+  .workshop-text p { font-size: 15px; line-height: 1.9; color: var(--text-gray); font-weight: 400; margin-bottom: 20px; }
+
+  /* ─── NEWS (XU HƯỚNG NHÀ ĐẸP) ────────────── */
+  .news { background: var(--white); }
+  .news-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+  .news-card { cursor: pointer; display: flex; flex-direction: column; }
+  .news-img { aspect-ratio: 4/3; background: #E0E0E0; overflow: hidden; margin-bottom: 16px; border-radius: 6px; }
+  .news-img .img-placeholder { height: 100%; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #888; letter-spacing: 0.1em; transition: transform .4s ease; }
+  .news-card:hover .news-img .img-placeholder { transform: scale(1.05); }
+  .news-info { display: flex; flex-direction: column; flex: 1; }
+  .news-title { font-size: 16px; font-weight: 700; color: var(--gold); line-height: 1.4; margin-bottom: 10px; transition: color .2s; }
+  .news-card:hover .news-title { color: var(--navy); }
+  .news-excerpt { font-size: 13.5px; color: var(--text-gray); line-height: 1.6; margin-bottom: 12px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .news-more { color: var(--gold); font-size: 13px; font-weight: 600; text-decoration: none; margin-top: auto; transition: color .2s; }
+  .news-more:hover { color: var(--navy); }
+
+  /* ─── FENG SHUI TOOLS ──────────────── */
+  .feng-shui { background: var(--bg-alt); }
+  .fs-container { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  .fs-card { background: var(--white); border: 1px solid var(--border); padding: 40px 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); display: flex; flex-direction: column; }
+  .fs-title { font-size: 17px; font-weight: 700; color: var(--navy); text-transform: uppercase; margin-bottom: 35px; position: relative; }
+  .fs-title::after { content: ''; position: absolute; left: 0; bottom: -12px; width: 60px; height: 3px; background: var(--red); }
+  .fs-form { display: flex; flex-direction: column; gap: 20px; flex: 1; }
+  .fs-form-row { display: flex; gap: 15px; }
+  .fs-group { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+  .fs-group label { font-size: 14px; color: var(--text-main); font-weight: 500; }
+  .fs-group select { padding: 12px 16px; border: 1px solid #D1D5DB; border-radius: 4px; background: var(--white); color: var(--text-main); font-family: 'Montserrat', Arial, sans-serif; font-size: 14px; outline: none; transition: border-color 0.2s; cursor: pointer; }
+  .fs-group select:focus { border-color: var(--navy); }
+  .btn-fs { background: var(--red); color: var(--white); padding: 12px 32px; border: none; border-radius: 4px; font-weight: 600; cursor: pointer; transition: all .2s; font-family: 'Montserrat', Arial, sans-serif; align-self: flex-start; margin-top: 15px; }
+  .btn-fs:hover { background: #c22929; box-shadow: 0 4px 15px rgba(222, 54, 54, 0.2); transform: translateY(-1px); }
+
+  /* ─── CTA BANNER ─────────────────────────── */
+  .cta-banner { position: relative; padding: 80px; background: var(--navy); overflow: hidden; }
+  .cta-inner { position: relative; z-index: 1; display: flex; justify-content: space-between; align-items: center; gap: 60px; }
+  .cta-text h2 { font-family: 'Montserrat', Arial, sans-serif; font-size: 38px; font-weight: 400; color: var(--white); line-height: 1.4; margin-bottom: 15px;}
+  .cta-text h2 strong { font-weight: 700; color: var(--gold); }
+  .cta-text p { color: #D1D5DB; }
+  .cta-text ul { color: #E5E7EB; }
+  .cta-form { background: var(--white) !important; padding: 40px !important; border-radius: 8px; box-shadow: 0 15px 40px rgba(0,0,0,0.2); }
+  .cta-form h3 { color: var(--navy) !important; font-family: 'Montserrat', Arial, sans-serif !important; font-weight: 700 !important; font-size: 22px !important; margin-bottom: 24px !important; }
+  .cta-form input, .cta-form select { background: var(--bg-alt) !important; border: 1px solid var(--border) !important; color: var(--text-main) !important; border-radius: 4px; }
+  .cta-form input::placeholder { color: #999; }
+
+  /* ─── FOOTER ─────────────────────────────── */
+  footer { background: var(--navy); padding: 80px 80px 32px; color: rgba(255,255,255,0.8); }
+  .footer-main { display: grid; grid-template-columns: 2fr 1fr 1fr 2fr; gap: 60px; margin-bottom: 48px; }
+  .footer-brand .logo-name { font-size: 32px; color: var(--white); }
+  .footer-slogan { font-size: 13px; color: rgba(255,255,255,0.6); letter-spacing: 0.05em; margin: 12px 0 24px; font-style: italic; }
+  .footer-col h4 { font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin-bottom: 24px; font-weight: 700; }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 12px; }
+  .footer-col ul li a { font-size: 14px; color: rgba(255,255,255,0.7); text-decoration: none; transition: color .2s; }
+  .footer-col ul li a:hover { color: var(--gold); }
+  .contact-items { display: flex; flex-direction: column; gap: 16px; }
+  .contact-item { display: flex; gap: 12px; align-items: flex-start; }
+  .contact-item svg { width: 18px; height: 18px; color: var(--gold); flex-shrink: 0; margin-top: 2px; }
+  .contact-item span { font-size: 14px; color: rgba(255,255,255,0.8); line-height: 1.6; }
+  .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;}
+  .footer-bottom p { font-size: 13px; color: rgba(255,255,255,0.5); }
+
+  /* ─── FLOATING ELEMENTS ──────────────────── */
+  .float-phone {
+    position: fixed; bottom: 32px; left: 32px; z-index: 1000; display: flex; align-items: center; gap: 12px;
+    background: var(--red); color: var(--white); padding: 12px 24px; font-size: 15px; font-weight: 700;
+    letter-spacing: 0.05em; text-decoration: none; box-shadow: 0 8px 25px rgba(222, 54, 54, 0.4);
+    animation: pulseRed 2s ease-in-out infinite; border-radius: 30px;
+  }
+  @keyframes pulseRed { 0%,100% { box-shadow: 0 8px 25px rgba(222, 54, 54, 0.4); } 50% { box-shadow: 0 8px 40px rgba(222, 54, 54, 0.7); } }
+  
+  .chat-widget { position: fixed; bottom: 32px; right: 32px; z-index: 1000; display: flex; flex-direction: column; gap: 12px; }
+  .chat-btn { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-weight: bold; font-size: 13px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: transform 0.2s; }
+  .chat-btn:hover { transform: scale(1.1); }
+  .zalo-btn { background: #0068FF; letter-spacing: 1px; }
+  .mess-btn { background: #0084FF; }
+  .mess-btn svg { width: 28px; height: 28px; }
+
+  /* MODAL VIDEO */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(11,28,56,0.9); z-index: 2000; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+  .modal-overlay.active { opacity: 1; visibility: visible; }
+  .modal-container { position: relative; width: 90%; max-width: 1000px; }
+  .modal-close { position: absolute; top: -40px; right: 0px; background: none; border: none; color: var(--white); font-size: 36px; cursor: pointer; transition: 0.2s; }
+  .modal-close:hover { color: var(--gold); }
+  .modal-video-wrapper { aspect-ratio: 16/9; background: #000; width: 100%; border-radius: 8px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+  .modal-video-wrapper iframe { width: 100%; height: 100%; }
+
+  /* =======================================================================
+     RESPONSIVE (MOBILE & TABLET)
+     ======================================================================= */
+  @media (max-width: 1200px) {
+    .project-grid { grid-template-columns: repeat(3, 1fr); }
+    .news-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 991px) {
+    section { padding: 60px 40px; }
+    .topbar { display: none; }
+    .hero-content { padding: 0 40px; }
+    .hero-stats { display: none; }
+    
+    .menu-toggle { display: block; }
+    .nav-links {
+      position: absolute; top: 100%; left: 0; right: 0; background: var(--white);
+      flex-direction: column; align-items: flex-start; padding: 20px 40px;
+      border-top: 1px solid var(--border); display: none; box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    }
+    .nav-links.active { display: flex; }
+    .nav-links > li { width: 100%; }
+    .nav-links > li > a { padding: 15px 0; border-bottom: 1px solid var(--border); width: 100%; justify-content: space-between; }
+    .dropdown { position: static; opacity: 1; visibility: visible; transform: none; border: none; display: none; padding-left: 20px; box-shadow: none;}
+    .nav-links > li.active-drop .dropdown { display: block; }
+    
+    .about-inner, .workshop-inner, .cta-inner, .diff-inner { grid-template-columns: 1fr; gap: 40px; }
+    .about-media, .workshop-gallery { max-width: 500px; margin: 0 auto; width: 100%; }
+    
+    .project-grid { grid-template-columns: repeat(2, 1fr); }
+    .pricing-cards { grid-template-columns: 1fr; }
+    .video-grid { grid-template-columns: 1fr; }
+    .video-item.large { grid-row: auto; }
+    .video-item.large .video-thumb { min-height: 300px; }
+    
+    .process-steps { grid-template-columns: repeat(2, 1fr); gap: 40px 20px; }
+    .fs-container { grid-template-columns: 1fr; }
+    
+    footer { padding: 60px 40px 32px; }
+    .footer-main { grid-template-columns: 1fr 1fr; }
+    .cta-banner { padding: 60px 40px; }
+    .cta-inner { flex-direction: column; }
+  }
+
+  @media (max-width: 768px) {
+    section { padding: 50px 20px; }
+    nav { padding: 0 20px; }
+    .hero-content { padding: 0 20px; }
+    .project-grid { grid-template-columns: 1fr; }
+    .news-grid { grid-template-columns: 1fr; }
+    .process-steps { grid-template-columns: 1fr; }
+    .fs-form-row { flex-direction: column; }
+    .footer-main { grid-template-columns: 1fr; gap: 40px; }
+    .cta-banner { padding: 50px 20px; }
+    .float-phone { left: 20px; bottom: 20px; padding: 10px 20px; font-size: 14px;}
+    .chat-widget { right: 20px; bottom: 20px; }
+    .chat-btn { width: 45px; height: 45px; }
+    .section-header-row { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body id="top">
+
+<div class="topbar">
+  <div class="topbar-left">
+    <span>
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.00 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92v2z"/></svg>
+      <a href="tel:0789996000">Hotline: 0789 996 000 – 0822 008 080</a>
+    </span>
+    <span>
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      <a href="mailto:tuvanthietke@luxiahome.vn">tuvanthietke@luxiahome.vn</a>
+    </span>
+  </div>
+  <div class="topbar-right">
+    <div class="search-box">
+      <input type="text" placeholder="Tìm kiếm...">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </div>
+  </div>
+</div>
+
+<nav>
+  <a href="#top" class="logo">
+    <span class="logo-name">LUXIA HOME</span>
+    <span class="logo-sub">Design & Build</span>
+  </a>
+  <div class="menu-toggle">☰</div>
+  <ul class="nav-links">
+    <li class="active"><a href="#top">Trang chủ</a></li>
+    <li>
+      <a href="#thiet-ke-kien-truc">Thiết kế kiến trúc <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></a>
+      <div class="dropdown">
+        <a href="javascript:void(0)">Biệt thự Tân cổ điển</a>
+        <a href="javascript:void(0)">Biệt thự Hiện đại</a>
+        <a href="javascript:void(0)">Lâu đài Cổ điển</a>
+      </div>
+    </li>
+    <li>
+      <a href="#thiet-ke-noi-that">Thiết kế nội thất <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></a>
+      <div class="dropdown">
+        <a href="javascript:void(0)">Nội thất Tân cổ điển</a>
+        <a href="javascript:void(0)">Nội thất Hiện đại</a>
+      </div>
+    </li>
+    <li><a href="#xuong-san-xuat">Xưởng sản xuất</a></li>
+    <li><a href="#tin-tuc">Tin tức</a></li>
+    <li><a href="#lien-he">Liên hệ</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-img-placeholder"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Luxia Home · Design & Build</div>
+    <h1>Kiến tạo<br><em>Không gian</em><br>Đầu tư Di sản</h1>
+    <p class="hero-sub">Mỗi công trình chúng tôi tạo ra không chỉ là ngôi nhà — đó là một tác phẩm mang dấu ấn vĩnh cửu, xứng tầm di sản cho thế hệ mai sau.</p>
+    <div class="hero-cta">
+      <a href="#dang-ky-tu-van" class="btn-primary">Nhận tư vấn miễn phí</a>
+      <a href="#thiet-ke-kien-truc" class="btn-outline">Xem công trình</a>
+    </div>
+  </div>
+  <div class="hero-scroll"><div class="scroll-line"></div>Cuộn xuống</div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">150<span style="font-size:24px">+</span></div><div class="stat-label">Công trình</div></div>
+    <div class="stat"><div class="stat-num">95<span style="font-size:24px">%</span></div><div class="stat-label">Độ chính xác 3D</div></div>
+  </div>
+</section>
+
+<!-- 1. PORTFOLIO: KIẾN TRÚC -->
+<section class="portfolio" id="thiet-ke-kien-truc">
+  <div class="section-header-row">
+    <div>
+      <div class="section-eyebrow">Dịch vụ</div>
+      <h2 class="section-title"><strong>Thiết kế kiến trúc</strong></h2>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+      <div class="filter-tabs">
+        <button class="filter-tab active">Tân cổ điển</button>
+        <button class="filter-tab">Hiện đại</button>
+        <button class="filter-tab">Cổ điển</button>
+      </div>
+      <a href="javascript:void(0)" class="btn-see-all">Xem tất cả</a>
+    </div>
+  </div>
+  <div class="project-grid">
+    <div class="project-card" data-category="Tân cổ điển">
+      <div class="project-img"><div class="img-placeholder">[ ẢNH DỰ ÁN 01 ]</div></div>
+      <div class="project-info">
+        <div class="project-title">Thiết kế biệt thự tân cổ điển mái mansard VK26001</div>
+        <div class="project-meta">
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            Chủ đầu tư: Anh Dũng
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            Địa điểm: Hà Nội
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 11V3H7v4H3v14h8v-4h2v4h8V11h-4zM7 19H5v-2h2v2zm0-4H5v-2h2v2zm0-4H5V9h2v2zm4 4H9v-2h2v2zm0-4H9V9h2v2zm0-4H9V5h2v2zm4 8h-2v-2h2v2zm0-4h-2V9h2v2zm0-4h-2V5h2v2zm4 12h-2v-2h2v2zm0-4h-2v-2h2v2z"/></svg>
+            Số tầng: 5 tầng
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 15.46l-5.27-.61-2.52 2.52a15.045 15.045 0 0 1-6.59-6.59l2.53-2.53L8.54 3H3.03C2.45 13.63 10.37 21.55 21 20.97v-5.51z"/></svg>
+            Mặt tiền: 10.2m
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="project-card" data-category="Tân cổ điển">
+      <div class="project-img"><div class="img-placeholder">[ ẢNH DỰ ÁN 02 ]</div></div>
+      <div class="project-info">
+        <div class="project-title">Thiết kế biệt thự tân cổ điển kiểu Pháp VK25047</div>
+        <div class="project-meta">
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            Chủ đầu tư: Anh Đức
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            Địa điểm: Nghệ An
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 11V3H7v4H3v14h8v-4h2v4h8V11h-4zM7 19H5v-2h2v2zm0-4H5v-2h2v2zm0-4H5V9h2v2zm4 4H9v-2h2v2zm0-4H9V9h2v2zm0-4H9V5h2v2zm4 8h-2v-2h2v2zm0-4h-2V9h2v2zm0-4h-2V5h2v2zm4 12h-2v-2h2v2zm0-4h-2v-2h2v2z"/></svg>
+            Số tầng: 4 tầng
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 15.46l-5.27-.61-2.52 2.52a15.045 15.045 0 0 1-6.59-6.59l2.53-2.53L8.54 3H3.03C2.45 13.63 10.37 21.55 21 20.97v-5.51z"/></svg>
+            Mặt tiền: 14.6m
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="project-card" data-category="Cổ điển">
+      <div class="project-img"><div class="img-placeholder">[ ẢNH DỰ ÁN 03 ]</div></div>
+      <div class="project-info">
+        <div class="project-title">Mẫu biệt thự Cổ điển Châu Âu 3 tầng sang trọng VK25031</div>
+        <div class="project-meta">
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            Chủ đầu tư: Anh Hùng
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            Địa điểm: Bình Dương
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 11V3H7v4H3v14h8v-4h2v4h8V11h-4zM7 19H5v-2h2v2zm0-4H5v-2h2v2zm0-4H5V9h2v2zm4 4H9v-2h2v2zm0-4H9V9h2v2zm0-4H9V5h2v2zm4 8h-2v-2h2v2zm0-4h-2V9h2v2zm0-4h-2V5h2v2zm4 12h-2v-2h2v2zm0-4h-2v-2h2v2z"/></svg>
+            Số tầng: 3 tầng
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 15.46l-5.27-.61-2.52 2.52a15.045 15.045 0 0 1-6.59-6.59l2.53-2.53L8.54 3H3.03C2.45 13.63 10.37 21.55 21 20.97v-5.51z"/></svg>
+            Mặt tiền: 22m
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="project-card" data-category="Tân cổ điển">
+      <div class="project-img"><div class="img-placeholder">[ ẢNH DỰ ÁN 04 ]</div></div>
+      <div class="project-info">
+        <div class="project-title">Nhà biệt thự tân cổ điển 3 tầng mái Nhật VK25042</div>
+        <div class="project-meta">
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            Chủ đầu tư: Chị Nhi
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            Địa điểm: Cần Thơ
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 11V3H7v4H3v14h8v-4h2v4h8V11h-4zM7 19H5v-2h2v2zm0-4H5v-2h2v2zm0-4H5V9h2v2zm4 4H9v-2h2v2zm0-4H9V9h2v2zm0-4H9V5h2v2zm4 8h-2v-2h2v2zm0-4h-2V9h2v2zm0-4h-2V5h2v2zm4 12h-2v-2h2v2zm0-4h-2v-2h2v2z"/></svg>
+            Số tầng: 3 tầng
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 15.46l-5.27-.61-2.52 2.52a15.045 15.045 0 0 1-6.59-6.59l2.53-2.53L8.54 3H3.03C2.45 13.63 10.37 21.55 21 20.97v-5.51z"/></svg>
+            Mặt tiền: 15m
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. PORTFOLIO: NỘI THẤT -->
+<section class="portfolio" id="thiet-ke-noi-that" style="padding-top: 20px;">
+  <div class="section-header-row">
+    <div>
+      <div class="section-eyebrow">Dịch vụ</div>
+      <h2 class="section-title"><strong>Thiết kế nội thất</strong></h2>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+      <div class="filter-tabs">
+        <button class="filter-tab active">Tân cổ điển</button>
+        <button class="filter-tab">Hiện đại</button>
+        <button class="filter-tab">Cổ điển</button>
+      </div>
+      <a href="javascript:void(0)" class="btn-see-all">Xem tất cả</a>
+    </div>
+  </div>
+  <div class="project-grid">
+    <div class="project-card" data-category="Tân cổ điển">
+      <div class="project-img"><div class="img-placeholder">[ ẢNH DỰ ÁN NỘI THẤT 01 ]</div></div>
+      <div class="project-info">
+        <div class="project-title">Thiết kế nội thất biệt thự tân cổ điển sang trọng NT26001</div>
+        <div class="project-meta">
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            Chủ đầu tư: Anh Hoàng
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            Địa điểm: Hải Phòng
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 11V3H7v4H3v14h8v-4h2v4h8V11h-4zM7 19H5v-2h2v2zm0-4H5v-2h2v2zm0-4H5V9h2v2zm4 4H9v-2h2v2zm0-4H9V9h2v2zm0-4H9V5h2v2zm4 8h-2v-2h2v2zm0-4h-2V9h2v2zm0-4h-2V5h2v2zm4 12h-2v-2h2v2zm0-4h-2v-2h2v2z"/></svg>
+            Phong cách: Tân cổ điển
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 15.46l-5.27-.61-2.52 2.52a15.045 15.045 0 0 1-6.59-6.59l2.53-2.53L8.54 3H3.03C2.45 13.63 10.37 21.55 21 20.97v-5.51z"/></svg>
+            Diện tích: 450m²
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="project-card" data-category="Hiện đại">
+      <div class="project-img"><div class="img-placeholder">[ ẢNH DỰ ÁN NỘI THẤT 02 ]</div></div>
+      <div class="project-info">
+        <div class="project-title">Thiết kế nội thất biệt thự hiện đại không gian mở NT25047</div>
+        <div class="project-meta">
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            Chủ đầu tư: Chị Lan
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            Địa điểm: Đà Nẵng
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 11V3H7v4H3v14h8v-4h2v4h8V11h-4zM7 19H5v-2h2v2zm0-4H5v-2h2v2zm0-4H5V9h2v2zm4 4H9v-2h2v2zm0-4H9V9h2v2zm0-4H9V5h2v2zm4 8h-2v-2h2v2zm0-4h-2V9h2v2zm0-4h-2V5h2v2zm4 12h-2v-2h2v2zm0-4h-2v-2h2v2z"/></svg>
+            Phong cách: Hiện đại
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 15.46l-5.27-.61-2.52 2.52a15.045 15.045 0 0 1-6.59-6.59l2.53-2.53L8.54 3H3.03C2.45 13.63 10.37 21.55 21 20.97v-5.51z"/></svg>
+            Diện tích: 320m²
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="project-card" data-category="Cổ điển">
+      <div class="project-img"><div class="img-placeholder">[ ẢNH DỰ ÁN NỘI THẤT 03 ]</div></div>
+      <div class="project-info">
+        <div class="project-title">Mẫu nội thất Cổ điển lâu đài Châu Âu vương giả NT25031</div>
+        <div class="project-meta">
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            Chủ đầu tư: Anh Tùng
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            Địa điểm: Quảng Ninh
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 11V3H7v4H3v14h8v-4h2v4h8V11h-4zM7 19H5v-2h2v2zm0-4H5v-2h2v2zm0-4H5V9h2v2zm4 4H9v-2h2v2zm0-4H9V9h2v2zm0-4H9V5h2v2zm4 8h-2v-2h2v2zm0-4h-2V9h2v2zm0-4h-2V5h2v2zm4 12h-2v-2h2v2zm0-4h-2v-2h2v2z"/></svg>
+            Phong cách: Cổ điển
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 15.46l-5.27-.61-2.52 2.52a15.045 15.045 0 0 1-6.59-6.59l2.53-2.53L8.54 3H3.03C2.45 13.63 10.37 21.55 21 20.97v-5.51z"/></svg>
+            Diện tích: 600m²
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="project-card" data-category="Tân cổ điển">
+      <div class="project-img"><div class="img-placeholder">[ ẢNH DỰ ÁN NỘI THẤT 04 ]</div></div>
+      <div class="project-info">
+        <div class="project-title">Nội thất biệt thự tân cổ điển gỗ gõ đỏ NT25042</div>
+        <div class="project-meta">
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            Chủ đầu tư: Chú Bình
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            Địa điểm: TP. HCM
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 11V3H7v4H3v14h8v-4h2v4h8V11h-4zM7 19H5v-2h2v2zm0-4H5v-2h2v2zm0-4H5V9h2v2zm4 4H9v-2h2v2zm0-4H9V9h2v2zm0-4H9V5h2v2zm4 8h-2v-2h2v2zm0-4h-2V9h2v2zm0-4h-2V5h2v2zm4 12h-2v-2h2v2zm0-4h-2v-2h2v2z"/></svg>
+            Phong cách: Tân cổ điển
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 15.46l-5.27-.61-2.52 2.52a15.045 15.045 0 0 1-6.59-6.59l2.53-2.53L8.54 3H3.03C2.45 13.63 10.37 21.55 21 20.97v-5.51z"/></svg>
+            Diện tích: 380m²
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. PORTFOLIO: DỰ ÁN THI CÔNG -->
+<section class="portfolio" id="du-an-thi-cong" style="padding-top: 20px;">
+  <div class="section-header-row">
+    <div>
+      <div class="section-eyebrow">Dịch vụ</div>
+      <h2 class="section-title"><strong>Dự án thi công</strong></h2>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+      <div class="filter-tabs">
+        <button class="filter-tab active">Tân cổ điển</button>
+        <button class="filter-tab">Hiện đại</button>
+        <button class="filter-tab">Cổ điển</button>
+      </div>
+      <a href="javascript:void(0)" class="btn-see-all">Xem tất cả</a>
+    </div>
+  </div>
+  <div class="project-grid">
+    <div class="project-card" data-category="Tân cổ điển">
+      <div class="project-img"><div class="img-placeholder">[ ẢNH THI CÔNG 01 ]</div></div>
+      <div class="project-info">
+        <div class="project-title">Thi công trọn gói biệt thự tân cổ điển mái mansard TC26001</div>
+        <div class="project-meta">
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            Chủ đầu tư: Anh Dũng
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            Địa điểm: Hà Nội
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 11V3H7v4H3v14h8v-4h2v4h8V11h-4zM7 19H5v-2h2v2zm0-4H5v-2h2v2zm0-4H5V9h2v2zm4 4H9v-2h2v2zm0-4H9V9h2v2zm0-4H9V5h2v2zm4 8h-2v-2h2v2zm0-4h-2V9h2v2zm0-4h-2V5h2v2zm4 12h-2v-2h2v2zm0-4h-2v-2h2v2z"/></svg>
+            Tiến độ: Đã hoàn thành
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 15.46l-5.27-.61-2.52 2.52a15.045 15.045 0 0 1-6.59-6.59l2.53-2.53L8.54 3H3.03C2.45 13.63 10.37 21.55 21 20.97v-5.51z"/></svg>
+            Quy mô: 5 tầng
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="project-card" data-category="Tân cổ điển">
+      <div class="project-img"><div class="img-placeholder">[ ẢNH THI CÔNG 02 ]</div></div>
+      <div class="project-info">
+        <div class="project-title">Thi công hoàn thiện biệt thự tân cổ điển kiểu Pháp TC25047</div>
+        <div class="project-meta">
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            Chủ đầu tư: Anh Đức
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            Địa điểm: Nghệ An
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 11V3H7v4H3v14h8v-4h2v4h8V11h-4zM7 19H5v-2h2v2zm0-4H5v-2h2v2zm0-4H5V9h2v2zm4 4H9v-2h2v2zm0-4H9V9h2v2zm0-4H9V5h2v2zm4 8h-2v-2h2v2zm0-4h-2V9h2v2zm0-4h-2V5h2v2zm4 12h-2v-2h2v2zm0-4h-2v-2h2v2z"/></svg>
+            Tiến độ: Đang thi công
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 15.46l-5.27-.61-2.52 2.52a15.045 15.045 0 0 1-6.59-6.59l2.53-2.53L8.54 3H3.03C2.45 13.63 10.37 21.55 21 20.97v-5.51z"/></svg>
+            Quy mô: 4 tầng
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="project-card" data-category="Cổ điển">
+      <div class="project-img"><div class="img-placeholder">[ ẢNH THI CÔNG 03 ]</div></div>
+      <div class="project-info">
+        <div class="project-title">Thi công Cổ điển lâu đài Châu Âu 3 tầng sang trọng TC25031</div>
+        <div class="project-meta">
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            Chủ đầu tư: Anh Hùng
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            Địa điểm: Bình Dương
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 11V3H7v4H3v14h8v-4h2v4h8V11h-4zM7 19H5v-2h2v2zm0-4H5v-2h2v2zm0-4H5V9h2v2zm4 4H9v-2h2v2zm0-4H9V9h2v2zm0-4H9V5h2v2zm4 8h-2v-2h2v2zm0-4h-2V9h2v2zm0-4h-2V5h2v2zm4 12h-2v-2h2v2zm0-4h-2v-2h2v2z"/></svg>
+            Tiến độ: Đã bàn giao
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 15.46l-5.27-.61-2.52 2.52a15.045 15.045 0 0 1-6.59-6.59l2.53-2.53L8.54 3H3.03C2.45 13.63 10.37 21.55 21 20.97v-5.51z"/></svg>
+            Quy mô: 3 tầng
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="project-card" data-category="Tân cổ điển">
+      <div class="project-img"><div class="img-placeholder">[ ẢNH THI CÔNG 04 ]</div></div>
+      <div class="project-info">
+        <div class="project-title">Thi công trọn gói biệt thự tân cổ điển 3 tầng mái Nhật TC25042</div>
+        <div class="project-meta">
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            Chủ đầu tư: Chị Nhi
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            Địa điểm: Cần Thơ
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 11V3H7v4H3v14h8v-4h2v4h8V11h-4zM7 19H5v-2h2v2zm0-4H5v-2h2v2zm0-4H5V9h2v2zm4 4H9v-2h2v2zm0-4H9V9h2v2zm0-4H9V5h2v2zm4 8h-2v-2h2v2zm0-4h-2V9h2v2zm0-4h-2V5h2v2zm4 12h-2v-2h2v2zm0-4h-2v-2h2v2z"/></svg>
+            Tiến độ: Đang thi công
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 15.46l-5.27-.61-2.52 2.52a15.045 15.045 0 0 1-6.59-6.59l2.53-2.53L8.54 3H3.03C2.45 13.63 10.37 21.55 21 20.97v-5.51z"/></svg>
+            Quy mô: 3 tầng
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="about" id="ve-chung-toi">
+  <div class="about-inner">
+    <div class="about-media">
+      <div class="img-placeholder">[ ẢNH CÔNG TY / CEO ]</div>
+      <div class="about-badge">
+        <div class="badge-num">3T</div>
+        <div class="badge-txt">Tâm · Tầm · Tín</div>
+      </div>
+    </div>
+    <div class="about-text">
+      <div class="section-eyebrow">Về Luxia Home</div>
+      <!-- Đã xóa thẻ ngắt dòng để chữ liền mạch giống ảnh gốc của bạn -->
+      <h2 class="section-title" style="max-width: 600px; line-height: 1.4;">Biểu tượng nghệ thuật sống dành cho giới tinh hoa</h2>
+      <div class="section-divider"></div>
+      <p>Luxia Home là đơn vị thiết kế & thi công chìa khóa trao tay, chuyên về phân khúc Biệt thự, Lâu đài và Penthouse cao cấp. Chúng tôi không chỉ xây nhà — chúng tôi hiện thực hóa di sản của gia chủ.</p>
+      <div class="values-3t">
+        <div class="value-card"><div class="value-letter">T</div><div class="value-name">Tâm</div><div class="value-desc">Tận tụy tư vấn</div></div>
+        <div class="value-card"><div class="value-letter">T</div><div class="value-name">Tầm</div><div class="value-desc">Thẩm mỹ thượng lưu</div></div>
+        <div class="value-card"><div class="value-letter">T</div><div class="value-name">Tín</div><div class="value-desc">Cam kết chất lượng</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="services">
+  <div class="section-header-row" style="margin-bottom: 0;">
+    <div style="width: 100%; text-align: center;">
+      <div class="section-eyebrow" style="display:block; justify-content:center;">Bảng giá dịch vụ</div>
+      <h2 class="section-title"><strong>Báo giá Thiết kế Kiến trúc & Nội thất</strong></h2>
+      <div class="section-divider" style="margin:20px auto"></div>
+    </div>
+  </div>
+  
+  <div class="pricing-cards">
+    <div class="pricing-card">
+      <div class="pricing-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 21h18v-2H3v2zm2-2h14V7h-4V3H5v14zm2-12h6v2H7V7zm0 4h6v2H7v-2z"/></svg>
+      </div>
+      <h3 class="pricing-title">Biệt thự hiện đại</h3>
+      <div class="pricing-box">
+        <div class="price-row"><span class="icon-a">L</span> Kiến trúc: <strong>320.000đ/m²</strong></div>
+        <div class="price-row"><span class="icon-a">L</span> Nội thất: <strong>500.000đ/m²</strong></div>
+        <div class="price-row"><span class="icon-a">L</span> Trọn gói: <strong>700.000đ/m²</strong></div>
+      </div>
+      <ul class="pricing-details">
+        <li>Ví dụ: Nhà 200m² x 320.000đ = 64 triệu (dịch vụ thiết kế kiến trúc biệt thự hiện đại)</li>
+        <li><strong>Tặng 50%</strong> chi phí thiết kế, chỉ còn 32 triệu.</li>
+      </ul>
+      <a href="tel:0789996000" class="btn-pricing">Liên hệ tư vấn</a>
+    </div>
+
+    <div class="pricing-card">
+      <div class="pricing-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 9h20L12 2zm-7 9v9h2v-9H5zm4 0v9h2v-9H9zm4 0v9h2v-9h-2zm4 0v9h2v-9h-2zM3 20h18v2H3v-2z"/></svg>
+      </div>
+      <h3 class="pricing-title">Biệt thự tân cổ điển, cổ điển</h3>
+      <div class="pricing-box">
+        <div class="price-row"><span class="icon-a">L</span> Kiến trúc: <strong>360.000đ/m²</strong></div>
+        <div class="price-row"><span class="icon-a">L</span> Nội thất: <strong>600.000đ/m²</strong></div>
+        <div class="price-row"><span class="icon-a">L</span> Trọn gói: <strong>900.000đ/m²</strong></div>
+      </div>
+      <ul class="pricing-details">
+        <li>Ví dụ: Nhà 200m² x 900.000đ = 180 triệu (dịch vụ thiết kế trọn gói biệt thự tân cổ điển)</li>
+        <li><strong>Tặng 50%</strong> chi phí thiết kế, chỉ còn 90 triệu.</li>
+      </ul>
+      <a href="tel:0789996000" class="btn-pricing">Liên hệ tư vấn</a>
+    </div>
+
+    <div class="pricing-card">
+      <div class="pricing-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 22h20v-2H2v2zm2-2h16V10h-3V5h-2v5h-2V6h-2v4H9V5H7v5H4v10zm4-5h4v3H8v-3z"/></svg>
+      </div>
+      <h3 class="pricing-title">Lâu đài cổ điển</h3>
+      <div class="pricing-box">
+        <div class="price-row"><span class="icon-a">L</span> Kiến trúc: <strong>500.000đ/m²</strong></div>
+        <div class="price-row"><span class="icon-a">L</span> Nội thất: <strong>700.000đ/m²</strong></div>
+        <div class="price-row"><span class="icon-a">L</span> Trọn gói: <strong>1.000.000đ/m²</strong></div>
+      </div>
+      <ul class="pricing-details">
+        <li>Ví dụ: Nhà 200m² x 700.000đ = 140 triệu (dịch vụ thiết kế nội thất lâu đài cổ điển)</li>
+        <li><strong>Tặng 50%</strong> chi phí thiết kế, chỉ còn 70 triệu.</li>
+      </ul>
+      <a href="tel:0789996000" class="btn-pricing">Liên hệ tư vấn</a>
+    </div>
+  </div>
+</section>
+
+<section class="diff">
+  <div style="text-align:center;margin-bottom:60px">
+    <div class="section-eyebrow" style="justify-content:center;display:block">Điểm khác biệt</div>
+    <h2 class="section-title" style="text-align:center"><strong>Những gì chỉ Luxia Home mới có</strong></h2>
+    <div class="section-divider" style="margin:20px auto"></div>
+  </div>
+  <div class="diff-inner">
+    <div class="diff-card">
+      <div class="diff-number">01</div>
+      <h3 class="diff-title">"Ấn ký Viking"</h3>
+      <p class="diff-desc">Mỗi công trình sẽ có một "Ấn ký độc bản" được chạm khắc thủ công bằng đồng hoặc đá, ghi mã số dự án. Khách hàng sở hữu một "Limited Edition" không có căn thứ hai.</p>
+    </div>
+    <div class="diff-card">
+      <div class="diff-number">02</div>
+      <h3 class="diff-title">"Thuyền trưởng Dự án"</h3>
+      <p class="diff-desc">Mỗi gia chủ làm việc với một Shipmaster có quyền "Veto" tuyệt đối: Nếu phào chỉ lệch 1mm, Shipmaster sẽ yêu cầu làm lại ngay trước khi khách hàng phát hiện.</p>
+    </div>
+  </div>
+</section>
+
+<section class="real-projects">
+  <div class="section-header-row">
+    <div>
+      <div class="section-eyebrow">Review thực tế</div>
+      <h2 class="section-title"><strong>Công trình thực tế</strong></h2>
+    </div>
+  </div>
+  <div class="video-grid">
+    <div class="video-item large">
+      <div class="video-thumb"><div class="img-placeholder" style="height:100%; min-height:300px">[ VIDEO VILLA ]</div></div>
+      <div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+      <div class="video-label">
+        <div class="video-title">HERITAGE VILLA</div>
+        <div class="video-sub">Luxia Home · Tân cổ điển</div>
+      </div>
+    </div>
+    <div>
+      <div class="video-item" style="margin-bottom: 20px;">
+        <div class="video-thumb"><div class="img-placeholder" style="height:248px">[ VIDEO 02 ]</div></div>
+        <div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+      </div>
+      <div class="video-item">
+        <div class="video-thumb"><div class="img-placeholder" style="height:248px">[ VIDEO 03 ]</div></div>
+        <div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="process">
+  <div style="text-align:center;margin-bottom:60px">
+    <div class="section-eyebrow" style="display:block">Quy trình làm việc</div>
+    <h2 class="section-title" style="text-align:center"><strong>Từ Ý tưởng đến Di sản</strong></h2>
+    <div class="section-divider" style="margin:20px auto"></div>
+  </div>
+  <div class="process-steps">
+    <div class="process-step"><div class="step-num">01</div><div class="step-title">Tư vấn & Khảo sát</div></div>
+    <!-- Đã đảo ngược vị trí mục 2 và 3, cập nhật tiêu đề theo yêu cầu của bạn -->
+    <div class="process-step"><div class="step-num">02</div><div class="step-title">Ký kết & Triển khai</div></div>
+    <div class="process-step"><div class="step-num">03</div><div class="step-title">Thiết kế 2D và 3D</div></div>
+    <div class="process-step"><div class="step-num">04</div><div class="step-title">Thi công & Kiểm soát</div></div>
+    <div class="process-step"><div class="step-num">05</div><div class="step-title">Bàn giao & Hậu mãi</div></div>
+  </div>
+</section>
+
+<section class="workshop" id="xuong-san-xuat">
+  <div class="workshop-inner">
+    <div class="workshop-gallery">
+      <div class="gallery-item tall"><div class="img-placeholder">[ ẢNH XƯỞNG CHÍNH ]</div></div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div class="gallery-item" style="height: 100%;"><div class="img-placeholder" style="height:100%">[ ẢNH THỢ ]</div></div>
+        <div class="gallery-item" style="height: 100%;"><div class="img-placeholder" style="height:100%">[ SẢN PHẨM ]</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="section-eyebrow">Xưởng sản xuất</div>
+      <h2 class="section-title"><strong>Thi công nội thất</strong><br><span style="font-weight:400">Từ tay nghệ nhân đến di sản</span></h2>
+      <div class="section-divider"></div>
+      <p>Toàn bộ quy trình sản xuất được kiểm soát chặt chẽ, từ việc chọn lọc vật liệu nhập khẩu đến hoàn thiện từng chi tiết nhỏ nhất, đảm bảo mỗi sản phẩm đạt chuẩn "độc bản".</p>
+    </div>
+  </div>
+</section>
+
+<!-- TIN TỨC: XU HƯỚNG NHÀ ĐẸP -->
+<section class="news" id="tin-tuc">
+  <div class="section-header-row" style="margin-bottom: 20px;">
+    <div>
+      <div class="section-eyebrow">Tin tức</div>
+      <h2 class="section-title"><strong>Xu hướng nhà đẹp</strong></h2>
+    </div>
+    <a href="javascript:void(0)" class="btn-see-all">Xem tất cả</a>
+  </div>
+  
+  <div style="width: 100%; height: 1px; background: var(--border); margin-bottom: 40px;"></div>
+  
+  <div class="news-grid">
+    <div class="news-card">
+      <div class="news-img"><div class="img-placeholder">[ ẢNH BÀI VIẾT 01 ]</div></div>
+      <div class="news-info">
+        <h3 class="news-title">Biệt Thự Tân Cổ Điển Và Vẻ Đẹp Kiến Trúc Bền Vững Theo Thời Gian</h3>
+        <p class="news-excerpt">Có những công trình không cần đến sự phô trương để trở nên nổi bật. Không cần những đường nét quá cầu kỳ...</p>
+        <a href="javascript:void(0)" class="news-more">Xem thêm</a>
+      </div>
+    </div>
+
+    <div class="news-card">
+      <div class="news-img"><div class="img-placeholder">[ ẢNH BÀI VIẾT 02 ]</div></div>
+      <div class="news-info">
+        <h3 class="news-title">Biệt Thự Tân Cổ Điển – Sự Lựa Chọn Của Những Gia Chủ Có Gu</h3>
+        <p class="news-excerpt">Giữa muôn vàn phong cách kiến trúc hiện đại liên tục thay đổi, biệt thự tân cổ điển vẫn giữ được một sức hút mãnh liệt...</p>
+        <a href="javascript:void(0)" class="news-more">Xem thêm</a>
+      </div>
+    </div>
+
+    <div class="news-card">
+      <div class="news-img"><div class="img-placeholder">[ ẢNH BÀI VIẾT 03 ]</div></div>
+      <div class="news-info">
+        <h3 class="news-title">Những Yếu Tố Làm Nên Một Mẫu Nhà Tân Cổ Điển Đẹp Và Bền Vững</h3>
+        <p class="news-excerpt">Giữa thời đại mà kiến trúc thay đổi từng năm, dòng nhà tân cổ điển vẫn giữ được vị thế tôn vinh vẻ đẹp hoàng gia...</p>
+        <a href="javascript:void(0)" class="news-more">Xem thêm</a>
+      </div>
+    </div>
+
+    <div class="news-card">
+      <div class="news-img"><div class="img-placeholder">[ ẢNH BÀI VIẾT 04 ]</div></div>
+      <div class="news-info">
+        <h3 class="news-title">BST Mẫu Nhà 2 Tầng Hiện Đại Sang Trọng Dành Cho Gia Chủ Có Gu</h3>
+        <p class="news-excerpt">Trong bối cảnh đô thị ngày càng phát triển, quỹ đất bị thu hẹp, nhu cầu của gia đình trẻ hướng tới không gian xanh...</p>
+        <a href="javascript:void(0)" class="news-more">Xem thêm</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="feng-shui">
+  <div style="text-align:center;margin-bottom:60px">
+    <div class="section-eyebrow" style="display:block">Tiện ích Gia chủ</div>
+    <h2 class="section-title" style="text-align:center"><strong>Tra cứu Phong thủy</strong></h2>
+    <div class="section-divider" style="margin:20px auto"></div>
+  </div>
+  
+  <div class="fs-container">
+    <div class="fs-card">
+      <h3 class="fs-title">Xem tuổi xây dựng</h3>
+      <div class="fs-form">
+        <div class="fs-group">
+          <label>Năm sinh gia chủ</label>
+          <select>
+            <option selected disabled>Chọn năm sinh</option>
+            <option>1970</option><option>1975</option><option>1980</option>
+            <option>1985</option><option>1990</option><option>1995</option>
+            <option>2000</option>
+          </select>
+        </div>
+        <div class="fs-group">
+          <label>Năm xây dựng</label>
+          <select>
+            <option>2024</option>
+            <option>2025</option>
+            <option selected>2026</option>
+            <option>2027</option>
+            <option>2028</option>
+          </select>
+        </div>
+        <button type="button" class="btn-fs">Xem ngay</button>
+      </div>
+    </div>
+
+    <div class="fs-card">
+      <h3 class="fs-title">Xem hướng nhà</h3>
+      <div class="fs-form">
+        <div class="fs-form-row">
+          <div class="fs-group" style="flex: 2;">
+            <label>Năm sinh gia chủ</label>
+            <select>
+              <option selected disabled>Chọn năm sinh</option>
+              <option>1970</option><option>1975</option><option>1980</option>
+              <option>1985</option><option>1990</option><option>1995</option>
+              <option>2000</option>
+            </select>
+          </div>
+          <div class="fs-group" style="flex: 1;">
+            <label>Giới tính</label>
+            <select>
+              <option>Nam</option>
+              <option>Nữ</option>
+            </select>
+          </div>
+        </div>
+        <div class="fs-group">
+          <label>Hướng nhà</label>
+          <select>
+            <option selected disabled>Chọn hướng nhà</option>
+            <option>Hướng Đông</option>
+            <option>Hướng Tây</option>
+            <option>Hướng Nam</option>
+            <option>Hướng Bắc</option>
+            <option>Hướng Đông Nam</option>
+            <option>Hướng Tây Nam</option>
+            <option>Hướng Đông Bắc</option>
+            <option>Hướng Tây Bắc</option>
+          </select>
+        </div>
+        <button type="button" class="btn-fs">Xem ngay</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="cta-banner" id="dang-ky-tu-van">
+  <div class="cta-inner">
+    <div class="cta-text" style="flex: 1;">
+      <h2>Chia sẻ cùng chúng tôi<br><strong>về Tổ ấm mơ ước của Bạn</strong></h2>
+      <p style="margin-bottom: 24px;">Để lại thông tin, đội ngũ kiến trúc sư sẽ liên hệ tư vấn và khảo sát hiện trạng hoàn toàn miễn phí.</p>
+      <ul style="list-style: none; font-size: 15px; line-height: 2;">
+        <li>✓ Thiết kế & Thi công trọn gói</li>
+        <li>✓ Cam kết đúng vật liệu & tiến độ</li>
+        <li>✓ Bảo hành tận tâm, bảo trì trọn đời</li>
+      </ul>
+    </div>
+    <div class="cta-form" style="flex: 1; width: 100%;">
+      <h3>Đăng ký tư vấn</h3>
+      <form style="display: flex; flex-direction: column; gap: 16px;">
+        <input type="text" placeholder="Họ và tên của bạn *" required style="padding: 14px 16px; font-family: 'Montserrat', Arial, sans-serif;">
+        <input type="tel" placeholder="Số điện thoại liên hệ *" required style="padding: 14px 16px; font-family: 'Montserrat', Arial, sans-serif;">
+        <select style="padding: 14px 16px; font-family: 'Montserrat', Arial, sans-serif;">
+          <option>Loại hình công trình</option>
+          <option>Biệt thự Tân cổ điển</option>
+          <option>Biệt thự Hiện đại</option>
+        </select>
+        <button type="submit" class="btn-primary" style="width: 100%; margin-top: 10px; background: var(--navy); border: none;">Nhận báo giá khái toán</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<footer id="lien-he">
+  <div class="footer-main">
+    <div class="footer-brand">
+      <div class="logo-name">LUXIA HOME</div>
+      <div class="footer-slogan">"Kiến tạo không gian – Đầu tư di sản"</div>
+    </div>
+    <div class="footer-col">
+      <h4>Công ty</h4>
+      <ul><li><a href="#top">Trang chủ</a></li><li><a href="#ve-chung-toi">Về chúng tôi</a></li></ul>
+    </div>
+    <div class="footer-col">
+      <h4>Dịch vụ</h4>
+      <ul><li><a href="#thiet-ke-kien-truc">Thiết kế kiến trúc</a></li><li><a href="#du-an-thi-cong">Thi công trọn gói</a></li></ul>
+    </div>
+    <div class="footer-col">
+      <h4>Liên hệ</h4>
+      <div class="contact-items">
+        <div class="contact-item"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.00 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92v2z"/></svg><span>Hotline: 0789 996 000</span></div>
+        <div class="contact-item"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><span>Email: tuvanthietke@luxiahome.vn</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Luxia Home. All rights reserved.</p>
+  </div>
+</footer>
+
+<a href="tel:0789996000" class="float-phone">
+  <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.00 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92v2z"/></svg>
+  0789 996 000
+</a>
+
+<div class="chat-widget">
+  <a href="javascript:void(0)" class="chat-btn zalo-btn">Zalo</a>
+  <a href="javascript:void(0)" class="chat-btn mess-btn">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.145 2 11.259c0 2.89 1.446 5.467 3.738 7.153v3.834l3.414-1.879c.895.247 1.85.38 2.848.38 5.523 0 10-4.145 10-9.259S17.523 2 12 2zm1.09 12.38l-2.73-2.92-5.34 2.92 5.86-6.22 2.78 2.92 5.29-2.92-5.86 6.22z"/></svg>
+  </a>
+</div>
+
+<div id="videoModal" class="modal-overlay">
+  <div class="modal-container">
+    <button class="modal-close">&times;</button>
+    <div class="modal-video-wrapper">
+      <iframe id="videoIframe" src="" frameborder="0" allowfullscreen></iframe>
+    </div>
+  </div>
+</div>
+
+<script>
+  const menuToggle = document.querySelector('.menu-toggle');
+  const navLinks = document.querySelector('.nav-links');
+  
+  menuToggle.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
+  });
+
+  const dropItems = document.querySelectorAll('.nav-links > li');
+  dropItems.forEach(item => {
+    item.addEventListener('click', (e) => {
+      if(window.innerWidth <= 991 && item.querySelector('.dropdown')) {
+        item.classList.toggle('active-drop');
+      }
+    });
+  });
+
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 80) nav.style.boxShadow = '0 4px 20px rgba(0,0,0,0.08)';
+    else nav.style.boxShadow = '0 4px 15px rgba(0,0,0,0.04)';
+  });
+
+  document.querySelectorAll('.filter-tabs').forEach(tabsContainer => {
+    const tabs = tabsContainer.querySelectorAll('.filter-tab');
+    const projectGrid = tabsContainer.closest('.portfolio').querySelector('.project-grid');
+    const projects = projectGrid.querySelectorAll('.project-card');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', function() {
+        tabs.forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+
+        const targetCategory = this.textContent.trim();
+        projects.forEach(project => {
+          const projectCat = project.getAttribute('data-category');
+          if(targetCategory === 'Tất cả' || projectCat === targetCategory) {
+            project.style.display = 'block';
+          } else {
+            project.style.display = 'none';
+          }
+        });
+      });
+    });
+  });
+
+  const modal = document.getElementById('videoModal');
+  const iframe = document.getElementById('videoIframe');
+  const closeBtn = document.querySelector('.modal-close');
+
+  document.querySelectorAll('.play-btn, .video-thumb').forEach(btn => {
+    btn.addEventListener('click', () => {
+      iframe.src = "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"; 
+      modal.classList.add('active');
+    });
+  });
+
+  closeBtn.addEventListener('click', () => {
+    modal.classList.remove('active');
+    iframe.src = ""; 
+  });
+  
+  modal.addEventListener('click', (e) => {
+    if(e.target === modal) {
+      modal.classList.remove('active');
+      iframe.src = "";
+    }
+  });
+</script>
+</body>
+</html>
